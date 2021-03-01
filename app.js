@@ -3,6 +3,8 @@ const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const sauceRoutes = require('./routes/sauce');
+const userRoutes = require('./routes/user');
+const path = require('path');
 
 //Gestion des erreurs CORS
 app.use((req, res, next) => {
@@ -13,15 +15,17 @@ app.use((req, res, next) => {
 });
 
 /// Connexion de la base de donnée mangodb
-mongoose.connect('mongodb+srv://Mylene:Louisette24@cluster0.2pq7k.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://mylene:louisette@cluster0.c7qjx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 app.use(bodyParser.json());
-app.use('/api/sauces', sauceRoutes);
 
+app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/api/sauces', sauceRoutes);
+app.use('/api/auth', userRoutes);
 
 
 module.exports = app;
