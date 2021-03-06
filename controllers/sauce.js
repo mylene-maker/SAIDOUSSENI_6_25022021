@@ -74,6 +74,7 @@ exports.likeSauce = (req, res, next) => {
   })
   .then()
   .catch()
+  
 };
 
 // Récupère toute les sauces
