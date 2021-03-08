@@ -104,9 +104,8 @@ exports.likeSauce = (req, res, next) => {
           .catch((error) => res.status(400).json({ error }));
       }
       /* Pour supprimer un like ou dislike */
-      if (sauce.usersLiked.includes(req.body.userId)) {
+      else if (sauce.usersLiked.includes(req.body.userId)) {
         /* si l'utilisateur est déjà dans le tableau userLiked */
-
         Sauce.updateOne(
           { _id: req.params.id },
           {
