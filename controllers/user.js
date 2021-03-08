@@ -1,6 +1,6 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const User = require('../models/user');
+const bcrypt = require('bcrypt'); /* Paquage de chiffrement pour le mdp */
+const jwt = require('jsonwebtoken'); /* Permet de creer et verifier les tokens */
+const User = require('../models/user'); /* importation du modele de shema utilisateurs */
 
 // création d'un nouveau compte
 exports.signup = (req, res, next) => {
@@ -20,13 +20,12 @@ exports.signup = (req, res, next) => {
 
 // Connexion des comptes déjà existant 
 exports.login = (req, res, next) => {
-    User.findOne({ email: req.body.email })
+    User.findOne({ email: req.body.email }) /* Verifie si l'email existe dans la base de donnée */
       .then(user => {
-        // Vérifie que le compte existe
         if (!user) {
           return res.status(401).json({ error: 'Utilisateur non trouvé !' });
         }
-        // Compare le hash avec le mot de passe avant de valider la connexion
+        // Compare le mdp saisie avec le hash enregistrer avant de valider la connexion
         bcrypt.compare(req.body.password, user.password)
           .then(valid => {
             if (!valid) {
@@ -35,10 +34,10 @@ exports.login = (req, res, next) => {
             // le serveur renvoi un id et un token
            res.status(200).json({
             userId: user._id,
-            token: jwt.sign(
+            token: jwt.sign( /* Encode un nouveau token */
               { userId: user._id },
               'RANDOM_TOKEN_SECRET',
-              { expiresIn: '2h' }
+              { expiresIn: '2h' } /* Durée de validité du token */
             )
           });
         })

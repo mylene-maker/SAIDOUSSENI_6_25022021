@@ -1,7 +1,8 @@
 const http = require('http');
 const app = require('./app');
 
-const normalizePort = val => {
+/* Mise en place du server node */
+const normalizePort = val => { 
   const port = parseInt(val, 10);
 
   if (isNaN(port)) {

@@ -1,5 +1,5 @@
-const express = require("express");
-const router = express.Router();
+const express = require("express"); /* Framework express */
+const router = express.Router(); /* Router express */
 const sauceCtrl = require('../controllers/sauce');
 const auth = require('../middleware/auth');
 const multer = require('../middleware/multer-config');
@@ -23,6 +23,6 @@ router.put("/:id", auth, multer, sauceCtrl.modifySauce);
 router.delete("/:id", auth, sauceCtrl.deleteSauce);
 
 /// Post des likes ou dislikes
-router.post("/:id/like ", auth, sauceCtrl.likeSauce);
+router.post("/:id/like", auth, sauceCtrl.likeSauce);
 
 module.exports = router;
