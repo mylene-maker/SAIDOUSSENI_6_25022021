@@ -1,10 +1,18 @@
 const express = require('express');
-const app = express();
 const bodyParser = require('body-parser');
+
 const mongoose = require('mongoose');
+const path = require('path');
 const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
-const path = require('path');
+
+/// Connexion de la base de donnée mangodb
+mongoose.connect('mongodb+srv://mylene:louisette@cluster0.c7qjx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+  { useNewUrlParser: true,
+    useUnifiedTopology: true })
+  .then(() => console.log('Connexion à MongoDB réussie !'))
+  .catch(() => console.log('Connexion à MongoDB échouée !'));
+const app = express();
 
 //Gestion des erreurs CORS
 app.use((req, res, next) => {
@@ -14,12 +22,7 @@ app.use((req, res, next) => {
     next();
 });
 
-/// Connexion de la base de donnée mangodb
-mongoose.connect('mongodb+srv://mylene:louisette@cluster0.c7qjx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
-  { useNewUrlParser: true,
-    useUnifiedTopology: true })
-  .then(() => console.log('Connexion à MongoDB réussie !'))
-  .catch(() => console.log('Connexion à MongoDB échouée !'));
+
 
 app.use(bodyParser.json());
 

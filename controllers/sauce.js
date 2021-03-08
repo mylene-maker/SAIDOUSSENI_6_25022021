@@ -64,17 +64,31 @@ exports.deleteSauce = (req, res, next) => {
 
 /// Aimer une sauce
 exports.likeSauce = (req, res, next) => {
-  const sauceObject = req.body.sauce;
-  Sauce.updateOne ({_id : req.params.id}, { $set : {
-    like : sauceObject.like,
-    disliked : sauceObject.disliked,
-    usersLikes : sauceObject.usersDislikes,
-    usersDislikes : sauceObject.usersDislikes},
-    _id : req.params.id
-  })
-  .then()
-  .catch()
   
+  let message = "";
+  Sauce.findOne({ _id: req.params.id })
+  .then(sauce => {
+      if(req.body.like==1) {
+          sauce.usersLiked.push(req.body.userId);
+          sauce.likes+= req.body.like;
+          message = "Vous aimez cette sauce ";
+      } else if (req.body.like==-1) {
+          sauce.usersDisliked.push(req.body.userId);
+          sauce.dislikes+=1;
+          message = "Vous détestez cette sauce ";
+      } else if (req.body.like == 0 && sauce.usersLiked.includes(req.body.userId)){
+        sauce.userLiked.remove(req.body.userId)
+        sauce.likes -= 1
+      }
+      else if (req.body.like == 0 && sauce.usersDisliked.includes(req.body.userId)){
+        sauce.usersDisliked.remove(req.body.userId)
+        sauce.disliked -= 1
+      }
+      /*req.body.sauce = sauce;
+      req.body.message = message
+      next();*/
+  })
+  .catch(error => res.status(400).json({ error: "Une erreur est survenue !" }));
 };
 
 // Récupère toute les sauces
