@@ -2,6 +2,10 @@ const express = require('express'); /* utilisation du Framework express pour l'a
 const bodyParser = require('body-parser'); /* Permet d'extraire les objets json des demande POST */
 const mongoose = require('mongoose'); /* Permet l'interaction avec la base de donnée */
 const path = require('path'); /* Permet gerer et utiliser les chemins de fichiers */
+// utilisation du module 'helmet' pour la sécurité en protégeant l'application de certaines vulnérabilités
+// il sécurise nos requêtes HTTP, sécurise les en-têtes, contrôle la prélecture DNS du navigateur, empêche le détournement de clics
+// et ajoute une protection XSS mineure et protège contre le reniflement de TYPE MIME
+// cross-site scripting, sniffing et clickjacking
 const helmet = require('helmet'); 
 const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user'); 
@@ -21,7 +25,7 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS'); /* Autorise toute les methodes d'envoi cité */
     next();
 });
-
+// Transforme les données arrivant de la requête POST en un objet JSON facilement exploitable
 app.use(bodyParser.json());
 app.use(helmet());
 app.use('/images', express.static(path.join(__dirname, 'images'))); /* Gestionnaire de routage */

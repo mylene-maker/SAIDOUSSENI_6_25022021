@@ -17,4 +17,4 @@ const storage = multer.diskStorage({ /* Indique où enregister les fichiers */
   }
 });
 
-module.exports = multer({storage: storage}).single('image'); /* Geree uniquement les telechargements de fichiers images */
+module.exports = multer({storage: storage}).single('image'); /* Gere uniquement les telechargements de fichiers images */
