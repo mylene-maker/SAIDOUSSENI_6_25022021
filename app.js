@@ -7,11 +7,15 @@ const path = require('path'); /* Permet gerer et utiliser les chemins de fichier
 // et ajoute une protection XSS mineure et protège contre le reniflement de TYPE MIME
 // cross-site scripting, sniffing et clickjacking
 const helmet = require('helmet'); 
+
+// dotenv pour masquer les information de connexion à la base de donnée
+require ('dotenv').config();
+
 const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user'); 
 
 /***  Connexion de l'api au cluster ***/
-mongoose.connect('mongodb+srv://mylene:louisette@cluster0.c7qjx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+mongoose.connect(process.env.DB_URI,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
