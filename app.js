@@ -10,6 +10,7 @@ const helmet = require('helmet');
 
 // dotenv pour masquer les information de connexion à la base de donnée
 require ('dotenv').config();
+const rateLimit = require("express-rate-limit"); 
 
 const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user'); 
@@ -29,9 +30,16 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS'); /* Autorise toute les methodes d'envoi cité */
     next();
 });
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100 // chaque api est limité à 100 requête par fenêtre
+});
+
 // Transforme les données arrivant de la requête POST en un objet JSON facilement exploitable
 app.use(bodyParser.json());
 app.use(helmet());
+app.use(limiter);
 app.use('/images', express.static(path.join(__dirname, 'images'))); /* Gestionnaire de routage */
 app.use('/api/sauces', sauceRoutes); /* Route pour les demandes contenues dans la sauceRoute */
 app.use('/api/auth', userRoutes); /* Route pour les demandes contenues dans la userRoute */
